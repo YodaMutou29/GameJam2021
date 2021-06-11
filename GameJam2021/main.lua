@@ -1,31 +1,33 @@
 --  main.lua
 require 'src/Dependencies'
 
-love.load = function() 
-    --  Will make resizable later
-    --love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, {resizable = false})
+function love.load()
+    love.window.setTitle('Untitled')
 
-    love.window.setTitle("Luke and Jenna Game")
+    math.randomseed(os.time())
+    
+    push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
+        fullscreen = false,
+        vsync = true,
+        resizable = true,
+        canvas = false
+    })
+
+    gStateMachine = StateMachine {
+        ['start'] = function() return StartState() end,
+        ['play'] = function() return PlayState() end
+    }
+    gStateMachine:change('start')
+
+    love.keyboard.keysPressed = {}
 end
 
-local world = require("world")
---local entities = require("entities")
---local state = require("state")
-local input = require("input")
-
-love.focus = function(focus)
+function love.resize(w, h)
+    push:resize(w, h)
 end
 
-love.keypressed = function(key)
-    input.press(key)
-end
-
-love.keyreleased = function (key)
-end
-
-love.update = function(dt)
-end
-
-love.draw = function()
-
+function love.draw()
+    push:start()
+    gStateMachine:render()
+    push:finish()
 end
