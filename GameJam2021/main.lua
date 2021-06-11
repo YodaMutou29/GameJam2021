@@ -1,11 +1,5 @@
 --  main.lua
-
-
-WINDOW_WIDTH = 800
-WINDOW_HEIGHT = 600
-
-VIRTUAL_WIDTH = 256
-VIRTUAL_HEIGHT = 144
+require 'src/Dependencies'
 
 love.load = function() 
     --  Will make resizable later
